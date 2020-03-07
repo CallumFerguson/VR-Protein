@@ -10,7 +10,7 @@ public class HandManager : MonoBehaviour
 
     public LeapServiceProvider provider;
     public GameObject moveGameObject;
-    float moveGameObjectScale = 1;
+    float moveGameObjectScale = 2;
 
     float lastPinchDistance = -1;
     Vector3 lastMidPoint = Vector3.zero;
