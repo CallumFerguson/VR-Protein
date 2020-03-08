@@ -6,9 +6,18 @@ using Leap.Unity;
 
 public class HandManager : MonoBehaviour
 {
+    public enum PlayerType { VRPlayer, DesktopPlayer };
+    public PlayerType playerType;
+
+    public GameObject vrPlayer;
+    public GameObject desktopPlayer;
+
+    public LeapServiceProvider vrProvider;
+    public LeapServiceProvider desktopProvider;
+    LeapServiceProvider provider;
+
     public LineRenderer pointer;
 
-    public LeapServiceProvider provider;
     public GameObject moveGameObject;
     float moveGameObjectScale = 2;
 
@@ -34,6 +43,19 @@ public class HandManager : MonoBehaviour
 
     private void Start()
     {
+        if(playerType == PlayerType.VRPlayer)
+        {
+            vrPlayer.SetActive(true);
+            desktopPlayer.SetActive(false);
+            provider = vrProvider;
+        }
+        else
+        {
+            vrPlayer.SetActive(false);
+            desktopPlayer.SetActive(true);
+            provider = desktopProvider;
+        }
+
         pointer.startWidth = 0.01f;
         pointer.endWidth = 0.01f;
 
@@ -95,7 +117,8 @@ public class HandManager : MonoBehaviour
                     if (hand.IsRight)
                     {
                         RaycastHit hit;
-                        if (Physics.Raycast(hand.PalmPosition.ToVector3(), hand.Direction.ToVector3(), out hit))
+                        //Debug.DrawRay(hand.PalmPosition.ToVector3(), hand.Direction.ToVector3());
+                        if (Physics.Raycast(hand.PalmPosition.ToVector3(), hand.Direction.ToVector3(), out hit, Mathf.Infinity))
                         {
                             if (hit.collider.CompareTag("Panel"))
                             {
